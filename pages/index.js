@@ -1,16 +1,13 @@
 import List from "./components/list";
-import { add, get } from "./api/todos";
-import { useTodoStore } from "./states/todos";
+import { useState } from "react";
+import Create from "./components/create";
 
 export default function Home() {
-  const setTodos = useTodoStore((s) => s.setTodos);
+  const [showModal, setShowModal] = useState(false);
   const addNew = async () => {
-    const title = prompt("Başlık");
-    const content = prompt("İçerik");
-    const result = await add({ title, content });
-    console.log(result);
-    setTodos(await get());
+    setShowModal(true);
   };
+  const closeModal = () => setShowModal(false);
 
   return (
     <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
@@ -29,6 +26,8 @@ export default function Home() {
         </div>
       </div>
       <List />
+
+      <Create show={showModal} onClose={closeModal} />
     </div>
   );
 }
